@@ -649,11 +649,15 @@ You may have times where your buttons don't match your phone button template, an
 
 #### Update Speed Dial index based on phone button template
 
-run sql update speeddial sd set sd.speeddialindex = '4' where sd.label like 'WebEx' and exists (select * from device d where d.fkphonetemplate like '66827fa4-5dd5-7e53-4017-ba333ff1e2c7' and d.description like 'Robert Hainey - +13467831726' and d.pkid = sd.fkdevice)
+```sh
+admin:run sql update speeddial sd set sd.speeddialindex = '4' where sd.label like 'WebEx' and exists (select * from device d where d.fkphonetemplate like '66827fa4-5dd5-7e53-4017-ba333ff1e2c7' and d.description like 'Robert Hainey - +13467831726' and d.pkid = sd.fkdevice)
+```
 
 #### update speed dial index based on label, device pool and phone button template
 
-run sql update speeddial set speeddialindex = ‘4’ where label like ‘WebEx’ AND speeddial.fkdevice in (select pkid from device where device.fkphonetemplate like '62da8d7d-a885-ea31-5735-f90d95e575f6' and device.fkdevicepool like ‘cec8559c-3d22-4086-a27f-8cdfca4807a3’)
+```sh
+admin:run sql update speeddial set speeddialindex = ‘4’ where label like ‘WebEx’ AND speeddial.fkdevice in (select pkid from device where device.fkphonetemplate like '62da8d7d-a885-ea31-5735-f90d95e575f6' and device.fkdevicepool like ‘cec8559c-3d22-4086-a27f-8cdfca4807a3’)
+```
 
 ### #12
 
@@ -661,7 +665,9 @@ We've all ran into a situation where a directory number changes and calls are st
 
 #### take called party xform number and add it to translation pattern description
 
-run sql select dnorpattern, calledpartytransformationmask, description from numplan where tkpatternusage=3 and calledpartytransformationmask is not NULL
+```sh
+admin:run sql select dnorpattern, calledpartytransformationmask, description from numplan where tkpatternusage=3 and calledpartytransformationmask is not NULL
+```
 
 ### #13
 
@@ -669,8 +675,11 @@ Intercoms need an extra step to accomodate for users with multiple devices, sinc
 
 #### Set intercom’s default activated device to the one its associated to
 
-run sql select d.pkid as dev, n.pkid as num from device d join devicenumplanmap dnpm on d.pkid = dnpm.fkdevice join numplan n on n.pkid = dnpm.fknumplan where tkpatternusage = 13 and fkdevice_intercomdefault is NULL
+```sh
+admin:run sql select d.pkid as dev, n.pkid as num from device d join devicenumplanmap dnpm on d.pkid = dnpm.fkdevice join numplan n on n.pkid = dnpm.fknumplan where tkpatternusage = 13 and fkdevice_intercomdefault is NULL
+```
 
-run sql update numplan set fkdevice_intercomdefault = 'devpkid from before' where pkid = 'num pkid from before'
-
+```sh
+admin:run sql update numplan set fkdevice_intercomdefault = 'devpkid from before' where pkid = 'num pkid from before'
+```
 > 👉 Remember tkpatternusage 13 is an intercom dn
